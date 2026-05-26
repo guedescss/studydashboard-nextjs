@@ -36,7 +36,7 @@ export function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-colors text-[10px] font-medium ${
+                  className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-colors text-[10px] font-medium cursor-pointer ${
                     active ? "text-violet-400" : "text-zinc-500 hover:text-zinc-300"
                   }`}
                 >

@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import { Badge } from "@/components/ui/Badge";
 import { useToast } from "@/components/ui/Toast";
 
 interface FrequencyRecord {
@@ -157,7 +156,7 @@ export function FrequencyPage() {
                 key={day}
                 onClick={() => toggleDay(day)}
                 className={`
-                  aspect-square rounded-xl text-sm font-medium transition-all duration-150
+                  aspect-square rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer
                   ${isMarked
                     ? "bg-violet-600 text-white hover:bg-violet-500"
                     : "bg-white/5 text-zinc-400 hover:bg-white/10"

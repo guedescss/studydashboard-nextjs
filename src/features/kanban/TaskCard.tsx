@@ -29,7 +29,7 @@ export function TaskCard({ task, onEdit, onDelete, onDragStart }: TaskCardProps)
         <h3 className="text-sm font-medium text-zinc-100 leading-snug line-clamp-2">{task.title}</h3>
         <button
           onClick={() => onDelete(task.id)}
-          className="shrink-0 opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-red-400 transition-all p-0.5"
+          className="shrink-0 opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-red-400 transition-all p-0.5 cursor-pointer"
           aria-label="Delete task"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -55,7 +55,7 @@ export function TaskCard({ task, onEdit, onDelete, onDragStart }: TaskCardProps)
         <span>{formatDate(task.createdAt)}</span>
         <button
           onClick={() => onEdit(task)}
-          className="text-violet-400 hover:text-violet-300 transition-colors"
+          className="text-violet-400 hover:text-violet-300 transition-colors cursor-pointer"
         >
           Editar
         </button>

@@ -85,7 +85,7 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
           <div>
             <label className="text-sm font-medium text-zinc-300 mb-1 block">Prioridade</label>
             <select
-              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 cursor-pointer"
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
             >
@@ -98,7 +98,7 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
           <div>
             <label className="text-sm font-medium text-zinc-300 mb-1 block">Status</label>
             <select
-              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 cursor-pointer"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -115,7 +115,7 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
           <div>
             <label className="text-sm font-medium text-zinc-300 mb-1 block">Matéria</label>
             <select
-              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+              className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 cursor-pointer"
               value={subjectId}
               onChange={(e) => setSubjectId(e.target.value)}
             >

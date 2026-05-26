@@ -4,14 +4,7 @@ import { usePomodoroTimer } from "@/hooks/usePomodoroTimer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-
 const CIRCUMFERENCE = 2 * Math.PI * 120;
-
-const MODE_ICON = {
-  focus: "M13 10V3L4 14h7v7l9-11h-7z",
-  short_break: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z",
-  long_break: "M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z",
-};
 
 export function PomodoroPage() {
   const timer = usePomodoroTimer();
@@ -113,7 +106,7 @@ export function PomodoroPage() {
             <div className="mb-4">
               <label className="text-sm text-zinc-400 mb-1 block">Vincular à tarefa</label>
               <select
-                className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 cursor-pointer"
                 value={timer.taskId ?? ""}
                 onChange={(e) => timer.setTaskLink(e.target.value || null)}
               >

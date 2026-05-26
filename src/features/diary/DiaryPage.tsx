@@ -148,7 +148,7 @@ export function DiaryPage() {
             <div>
               <label className="text-sm font-medium text-zinc-300 mb-1 block">Dificuldade</label>
               <select
-                className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                className="w-full px-3 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 cursor-pointer"
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
               >
