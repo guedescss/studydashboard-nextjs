@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Subject {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks          Task[]
+  scheduleBlocks ScheduleBlock[]
+}
+
+model Task {
+  id                 String     @id @default(cuid())
+  title              String
+  description        String?
+  priority           Priority   @default(media)
+  status             TaskStatus @default(a_fazer)
+  estimatedPomodoros Int?
+  subjectId          String?
+  subject            Subject?   @relation(fields: [subjectId], references: [id])
+  notes              String?
+  completedAt        DateTime?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  pomodoroSessions PomodoroSession[]
+}
+
+enum Priority {
+  alta
+  media
+  baixa
+}
+
+enum TaskStatus {
+  a_fazer
+  fazendo_hoje
+  travado_pendente
+  concluido
+}
+
+model PomodoroSession {
+  id               String       @id @default(cuid())
+  date             DateTime     @default(now())
+  startTime        String?
+  endTime          String?
+  durationMinutes  Int          @default(25)
+  type             PomodoroType @default(focus)
+  taskId           String?
+  task             Task?        @relation(fields: [taskId], references: [id])
+  completed        Boolean      @default(true)
+  distractionCount Int          @default(0)
+  notes            String?
+  createdAt        DateTime     @default(now())
+
+  distractions Distraction[]
+}
+
+enum PomodoroType {
+  focus
+  short_break
+  long_break
+}
+
+model StudyDiary {
+  id                String   @id @default(cuid())
+  date              DateTime
+  liquidTimeMinutes Int      @default(0)
+  pomodoroCount     Int      @default(0)
+  whatWasStudied    String?
+  whatWasCompleted  String?
+  difficulty        String?
+  nextStep          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model FrequencyRecord {
+  id          String   @id @default(cuid())
+  monthYear   String
+  markedDays  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([monthYear])
+}
+
+model ScheduleBlock {
+  id        String   @id @default(cuid())
+  dayOfWeek String
+  startTime String
+  endTime   String
+  subjectId String?
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+  objective String?
+  status    String   @default("Planejado")
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Distraction {
+  id                String          @id @default(cuid())
+  date              DateTime        @default(now())
+  pomodoroSessionId String?
+  pomodoroSession   PomodoroSession? @relation(fields: [pomodoroSessionId], references: [id])
+  description       String?
+  createdAt         DateTime        @default(now())
+}
