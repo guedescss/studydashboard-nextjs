@@ -12,7 +12,7 @@ interface FrequencyRecord {
 }
 
 const MONTHS = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
 ];
 
@@ -28,14 +28,19 @@ export function FrequencyPage() {
   const loadRecords = useCallback(async () => {
     try {
       const res = await fetch("/api/frequency");
+      if (!res.ok) {
+        throw new Error("Failed to load frequency records");
+      }
       const data = await res.json();
       setRecords(data.records ?? []);
-    } catch { /* noop */ }
+    } catch {
+      toast("Nao foi possivel carregar a frequencia.", "error");
+    }
     setLoading(false);
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
-    loadRecords();
+    void Promise.resolve().then(loadRecords);
   }, [loadRecords]);
 
   const currentRecord = records.find((r) => r.monthYear === currentMonth);
@@ -58,15 +63,21 @@ export function FrequencyPage() {
     }
     const markedDays = Array.from(newMarked).sort((a, b) => Number(a) - Number(b)).join(",");
 
-    const res = await fetch("/api/frequency", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ monthYear: currentMonth, markedDays }),
-    });
+    try {
+      const res = await fetch("/api/frequency", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ monthYear: currentMonth, markedDays }),
+      });
 
-    if (res.ok) {
+      if (!res.ok) {
+        throw new Error("Failed to save frequency record");
+      }
+
       toast(newMarked.has(dayStr) ? "Dia marcado!" : "Dia desmarcado", newMarked.has(dayStr) ? "success" : "info");
       loadRecords();
+    } catch {
+      toast("Nao foi possivel salvar a frequencia.", "error");
     }
   };
 
@@ -95,8 +106,8 @@ export function FrequencyPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Frequência Mensal</h1>
-        <p className="text-zinc-400 mt-1">Marque os dias que você estudou</p>
+        <h1 className="text-2xl font-bold text-white">Frequencia Mensal</h1>
+        <p className="text-zinc-400 mt-1">Marque os dias que voce estudou</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -109,7 +120,7 @@ export function FrequencyPage() {
           <p className="text-2xl font-bold text-white mt-1">{percentage}%</p>
         </Card>
         <Card>
-          <p className="text-sm text-zinc-400">Mês Atual</p>
+          <p className="text-sm text-zinc-400">Mes Atual</p>
           <p className="text-2xl font-bold text-white mt-1">{MONTHS[month - 1]} {year}</p>
         </Card>
       </div>
@@ -132,7 +143,7 @@ export function FrequencyPage() {
         </div>
 
         <div className="grid grid-cols-7 gap-1 mb-2">
-          {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((d) => (
+          {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"].map((d) => (
             <div key={d} className="text-center text-xs text-zinc-500 font-medium py-2">
               {d}
             </div>
@@ -175,11 +186,10 @@ export function FrequencyPage() {
             <span className="w-3 h-3 rounded bg-violet-600" /> Marcado
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded bg-white/5 ring-1 ring-white/10" /> Disponível
+            <span className="w-3 h-3 rounded bg-white/5 ring-1 ring-white/10" /> Disponivel
           </span>
         </div>
       </Card>
     </div>
   );
 }
-

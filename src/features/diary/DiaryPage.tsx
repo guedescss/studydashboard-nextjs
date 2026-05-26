@@ -21,9 +21,9 @@ interface DiaryEntry {
 
 const DIFFICULTY_OPTIONS = [
   { value: "", label: "Selecione..." },
-  { value: "facil", label: "Fácil" },
-  { value: "medio", label: "Médio" },
-  { value: "dificil", label: "Difícil" },
+  { value: "facil", label: "Facil" },
+  { value: "medio", label: "Medio" },
+  { value: "dificil", label: "Dificil" },
 ];
 
 const difficultyVariant: Record<string, "success" | "warning" | "danger"> = {
@@ -49,15 +49,23 @@ export function DiaryPage() {
   const loadEntries = useCallback(async () => {
     try {
       const res = await fetch("/api/diary");
+      if (!res.ok) {
+        throw new Error("Failed to load diary entries");
+      }
       const data = await res.json();
       setEntries(data.entries ?? []);
-    } catch { /* noop */ }
+    } catch {
+      toast("Nao foi possivel carregar o diario.", "error");
+    }
     setLoading(false);
-  }, []);
+  }, [toast]);
 
   const loadTodayMetrics = useCallback(async () => {
     try {
       const res = await fetch("/api/dashboard");
+      if (!res.ok) {
+        return;
+      }
       const data = await res.json();
       setLiquidTime(String(data.todayMinutes || ""));
       setPomodoroCount(String(data.todayPomodoros || ""));
@@ -65,8 +73,9 @@ export function DiaryPage() {
   }, []);
 
   useEffect(() => {
-    loadEntries();
-    loadTodayMetrics();
+    void Promise.resolve().then(async () => {
+      await Promise.all([loadEntries(), loadTodayMetrics()]);
+    });
   }, [loadEntries, loadTodayMetrics]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,27 +83,33 @@ export function DiaryPage() {
     if (!date) return;
     setSaving(true);
 
-    const res = await fetch("/api/diary", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        date,
-        liquidTimeMinutes: liquidTime ? parseInt(liquidTime, 10) : 0,
-        pomodoroCount: pomodoroCount ? parseInt(pomodoroCount, 10) : 0,
-        whatWasStudied: whatWasStudied || null,
-        whatWasCompleted: whatWasCompleted || null,
-        difficulty: difficulty || null,
-        nextStep: nextStep || null,
-      }),
-    });
+    try {
+      const res = await fetch("/api/diary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date,
+          liquidTimeMinutes: liquidTime ? parseInt(liquidTime, 10) : 0,
+          pomodoroCount: pomodoroCount ? parseInt(pomodoroCount, 10) : 0,
+          whatWasStudied: whatWasStudied || null,
+          whatWasCompleted: whatWasCompleted || null,
+          difficulty: difficulty || null,
+          nextStep: nextStep || null,
+        }),
+      });
 
-    if (res.ok) {
-      toast("Diário salvo!", "success");
+      if (!res.ok) {
+        throw new Error("Failed to save diary entry");
+      }
+
+      toast("Diario salvo!", "success");
       loadEntries();
       setWhatWasCompleted("");
       setWhatWasStudied("");
       setNextStep("");
       setDifficulty("");
+    } catch {
+      toast("Nao foi possivel salvar o diario.", "error");
     }
     setSaving(false);
   };
@@ -111,7 +126,7 @@ export function DiaryPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Diário de Estudos</h1>
+        <h1 className="text-2xl font-bold text-white">Diario de Estudos</h1>
         <p className="text-zinc-400 mt-1">Registre o que estudou e acompanhe seu progresso</p>
       </div>
 
@@ -120,7 +135,7 @@ export function DiaryPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Input label="Data" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-            <Input label="Tempo Líquido (min)" type="number" min="0" value={liquidTime} onChange={(e) => setLiquidTime(e.target.value)} placeholder="Ex: 120" />
+            <Input label="Tempo Liquido (min)" type="number" min="0" value={liquidTime} onChange={(e) => setLiquidTime(e.target.value)} placeholder="Ex: 120" />
             <Input label="Pomodoros" type="number" min="0" value={pomodoroCount} onChange={(e) => setPomodoroCount(e.target.value)} placeholder="Ex: 4" />
           </div>
 
@@ -130,17 +145,17 @@ export function DiaryPage() {
               className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 text-sm min-h-[60px] resize-none"
               value={whatWasStudied}
               onChange={(e) => setWhatWasStudied(e.target.value)}
-              placeholder="Ex: Matemática - Revisão de trigonometria"
+              placeholder="Ex: Matematica - Revisao de trigonometria"
             />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-zinc-300 mb-1 block">O que foi concluído</label>
+            <label className="text-sm font-medium text-zinc-300 mb-1 block">O que foi concluido</label>
             <textarea
               className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-violet-500/50 text-sm min-h-[60px] resize-none"
               value={whatWasCompleted}
               onChange={(e) => setWhatWasCompleted(e.target.value)}
-              placeholder="Ex: 20 exercícios resolvidos"
+              placeholder="Ex: 20 exercicios resolvidos"
             />
           </div>
 
@@ -157,7 +172,7 @@ export function DiaryPage() {
                 ))}
               </select>
             </div>
-            <Input label="Próximo Passo" value={nextStep} onChange={(e) => setNextStep(e.target.value)} placeholder="Ex: Revisar amanhã" />
+            <Input label="Proximo Passo" value={nextStep} onChange={(e) => setNextStep(e.target.value)} placeholder="Ex: Revisar amanha" />
           </div>
 
           <div className="flex justify-end">
@@ -167,11 +182,11 @@ export function DiaryPage() {
       </Card>
 
       <div>
-        <h2 className="text-lg font-semibold text-white mb-4">Histórico ({entries.length})</h2>
+        <h2 className="text-lg font-semibold text-white mb-4">Historico ({entries.length})</h2>
         {entries.length === 0 ? (
           <Card>
             <p className="text-zinc-400 text-center py-8">
-              Nenhum registro no diário ainda.
+              Nenhum registro no diario ainda.
             </p>
           </Card>
         ) : (
@@ -206,7 +221,7 @@ export function DiaryPage() {
                 )}
                 {entry.nextStep && (
                   <p className="text-sm text-violet-400">
-                    <span className="text-zinc-500">Próximo:</span> {entry.nextStep}
+                    <span className="text-zinc-500">Proximo:</span> {entry.nextStep}
                   </p>
                 )}
               </Card>
@@ -217,4 +232,3 @@ export function DiaryPage() {
     </div>
   );
 }
-
