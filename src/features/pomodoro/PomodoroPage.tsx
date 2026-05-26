@@ -48,7 +48,7 @@ export function PomodoroPage() {
             ))}
           </div>
 
-          <div className="relative w-64 h-64 mx-auto mb-8">
+          <div className="relative w-56 h-56 sm:w-64 sm:h-64 mx-auto mb-8">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 256 256">
               <circle
                 cx="128" cy="128" r="120"

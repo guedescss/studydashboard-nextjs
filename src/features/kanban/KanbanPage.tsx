@@ -117,17 +117,17 @@ export function KanbanPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">Kanban</h1>
           <p className="text-zinc-400 mt-1">Gerencie suas tarefas de estudo</p>
         </div>
-        <Button onClick={() => { setEditingTask(null); setShowForm(true); }}>
+        <Button onClick={() => { setEditingTask(null); setShowForm(true); }} className="self-start sm:self-auto">
           + Nova Tarefa
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto pb-2 snap-x snap-mandatory md:overflow-visible md:pb-0">
         {COLUMNS.map((column) => {
           const columnTasks = getColumnTasks(column.id);
           return (
@@ -137,6 +137,7 @@ export function KanbanPage() {
               onDragOver={(e) => handleDragOver(e, column.id)}
               onDragLeave={() => setDragOverColumn(null)}
               className={`
+                min-w-[280px] md:min-w-0 snap-start
                 transition-all duration-200 rounded-2xl p-3 min-h-[200px]
                 ${dragOverColumn === column.id ? "bg-violet-500/10 ring-2 ring-violet-500/40" : ""}
               `}
