@@ -48,6 +48,10 @@ export function Sidebar() {
               );
             })}
           </div>
+          <div className="flex items-center justify-center gap-1.5 pb-1 text-[9px] text-zinc-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-dot" />
+            <span>Desenvolvido por João Vitor Guedes</span>
+          </div>
         </nav>
       </>
     );
@@ -81,6 +85,12 @@ export function Sidebar() {
           );
         })}
       </nav>
+      <div className="px-4 py-3 border-t border-white/5">
+        <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-dot shrink-0" />
+          <span>Desenvolvido por João Vitor Guedes</span>
+        </div>
+      </div>
     </aside>
   );
 }
