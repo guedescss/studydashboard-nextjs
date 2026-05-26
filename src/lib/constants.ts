@@ -7,12 +7,6 @@ export const NAV_ITEMS = [
   { label: "Diário", href: "/diary", icon: "diary" },
 ] as const;
 
-export const POMODORO_PRESETS = [
-  { label: "Foco", minutes: 25, type: "focus" },
-  { label: "Pausa Curta", minutes: 5, type: "short_break" },
-  { label: "Pausa Longa", minutes: 15, type: "long_break" },
-] as const;
-
 export const PRIORITY_LABELS: Record<string, string> = {
   alta: "Alta",
   media: "Média",
