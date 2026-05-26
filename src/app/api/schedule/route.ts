@@ -89,34 +89,51 @@ const DEFAULT_SCHEDULE_BLOCKS = [
   },
 ];
 
+function defaultBlocksResponse() {
+  return DEFAULT_SCHEDULE_BLOCKS.map((block, index) => ({
+    id: `default-${index}`,
+    dayOfWeek: block.dayOfWeek,
+    startTime: block.startTime,
+    endTime: block.endTime,
+    objective: block.objective,
+    status: "Planejado",
+    subject: { name: block.subjectName },
+  }));
+}
+
 export async function GET() {
-  const { prisma } = await import("@/lib/prisma");
-  const blockCount = await prisma.scheduleBlock.count();
+  try {
+    const { prisma } = await import("@/lib/prisma");
+    const blockCount = await prisma.scheduleBlock.count();
 
-  if (blockCount === 0) {
-    for (const block of DEFAULT_SCHEDULE_BLOCKS) {
-      const subject = await prisma.subject.upsert({
-        where: { name: block.subjectName },
-        update: {},
-        create: { name: block.subjectName },
-      });
+    if (blockCount === 0) {
+      for (const block of DEFAULT_SCHEDULE_BLOCKS) {
+        const subject = await prisma.subject.upsert({
+          where: { name: block.subjectName },
+          update: {},
+          create: { name: block.subjectName },
+        });
 
-      await prisma.scheduleBlock.create({
-        data: {
-          dayOfWeek: block.dayOfWeek,
-          startTime: block.startTime,
-          endTime: block.endTime,
-          subjectId: subject.id,
-          objective: block.objective,
-          status: "Planejado",
-        },
-      });
+        await prisma.scheduleBlock.create({
+          data: {
+            dayOfWeek: block.dayOfWeek,
+            startTime: block.startTime,
+            endTime: block.endTime,
+            subjectId: subject.id,
+            objective: block.objective,
+            status: "Planejado",
+          },
+        });
+      }
     }
-  }
 
-  const blocks = await prisma.scheduleBlock.findMany({
-    orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
-    include: { subject: { select: { name: true } } },
-  });
-  return NextResponse.json({ blocks });
+    const blocks = await prisma.scheduleBlock.findMany({
+      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
+      include: { subject: { select: { name: true } } },
+    });
+    return NextResponse.json({ blocks });
+  } catch (error) {
+    console.error("Failed to load schedule blocks", error);
+    return NextResponse.json({ blocks: defaultBlocksResponse() });
+  }
 }
