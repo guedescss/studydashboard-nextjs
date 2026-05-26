@@ -20,27 +20,36 @@ export function Sidebar() {
 
   if (isMobile) {
     return (
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/95 border-t border-white/10 backdrop-blur-xl">
-        <div className="flex justify-around items-center h-16 px-2">
-          {NAV_ITEMS.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-xl transition-colors text-[10px] font-medium ${
-                  active ? "text-violet-400" : "text-zinc-500 hover:text-zinc-300"
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d={iconMap[item.icon]} />
-                </svg>
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      <>
+        <header className="fixed top-0 left-0 right-0 z-40 bg-zinc-900/95 border-b border-white/10 backdrop-blur-xl pt-[env(safe-area-inset-top,0px)]">
+          <div className="flex items-center justify-center h-12 px-4">
+            <h1 className="text-base font-bold text-white tracking-tight">
+              <span className="text-violet-400">Study</span>Dashboard
+            </h1>
+          </div>
+        </header>
+        <nav className="fixed bottom-0 left-0 right-0 z-40 bg-zinc-900/95 border-t border-white/10 backdrop-blur-xl pb-[env(safe-area-inset-bottom,0px)]">
+          <div className="flex justify-around items-center h-14 px-2">
+            {NAV_ITEMS.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-colors text-[10px] font-medium ${
+                    active ? "text-violet-400" : "text-zinc-500 hover:text-zinc-300"
+                  }`}
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={iconMap[item.icon]} />
+                  </svg>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      </>
     );
   }
 

@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StudyDashboard
 
-## Getting Started
+Dashboard de estudos com Pomodoro, Kanban, Cronograma Semanal, Frequência Mensal e Diário de Estudos — tudo integrado com banco de dados PostgreSQL via Prisma ORM.
 
-First, run the development server:
+## Sobre o Projeto
+
+Este é um **upgrade** de um projeto anterior feito com Vanilla JS + Express + CSV — onde tudo era em páginas HTML puras, sem rotas ou componentização.
+
+A versão atual foi reescrita com tecnologias modernas para melhor desempenho, escalabilidade e organização do código. O principal diferencial é o uso do **Next.js com API Routes**, que substitui o backend separado em Express: cada funcionalidade (Pomodoro, Kanban, Diário) tem seu próprio endpoint, acessado por rotas específicas, enquanto no projeto antigo tudo era servido em HTML estático sem separação entre frontend e backend.
+
+- **Next.js 16** (App Router) — Frontend + API Routes próprias
+- **React 19** — Componentes modulares e reutilizáveis
+- **Prisma ORM 7** — Camada de banco de dados
+- **PostgreSQL (Supabase)** — Persistência remota
+- **Tailwind CSS 4** — Estilização com design system dark/glassmorphism
+
+## Funcionalidades
+
+| Feature | Descrição |
+|---|---|
+| **Dashboard** | Métricas em tempo real: horas de estudo, pomodoros, tarefas concluídas |
+| **Pomodoro Timer** | Timer circular SVG com 3 modos (Foco 25min, Pausa Curta 5min, Pausa Longa 15min), sons, vínculo com tarefas e contador de distrações |
+| **Kanban Board** | 4 colunas com drag-and-drop, criação/edição de tarefas, prioridades, estimativas e vínculo com matérias |
+| **Cronograma Semanal** | Grade com blocos de estudo por dia da semana, destaque do dia atual |
+| **Frequência Mensal** | Calendário interativo clicável com estatísticas de dias estudados |
+| **Diário de Estudos** | Formulário com auto-preenchimento das métricas do dia e histórico completo |
+
+## Como Rodar
 
 ```bash
+# Instalar dependências
+npm install
+
+# Configurar variáveis de ambiente
+# Edite .env com sua DATABASE_URL do PostgreSQL
+
+# Rodar migrations e seed
+npx prisma migrate deploy
+npm run seed
+
+# Iniciar dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js · React · TypeScript · Prisma ORM · PostgreSQL · Tailwind CSS
