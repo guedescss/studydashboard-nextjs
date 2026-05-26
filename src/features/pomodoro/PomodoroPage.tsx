@@ -117,9 +117,9 @@ export function PomodoroPage() {
                 value={timer.taskId ?? ""}
                 onChange={(e) => timer.setTaskLink(e.target.value || null)}
               >
-                <option value="">Nenhuma</option>
+                <option value="" className="text-zinc-900 bg-white">Nenhuma</option>
                 {timer.tasks.map((t) => (
-                  <option key={t.id} value={t.id}>{t.title}</option>
+                  <option key={t.id} value={t.id} className="text-zinc-900 bg-white">{t.title}</option>
                 ))}
               </select>
             </div>

@@ -153,7 +153,7 @@ export function DiaryPage() {
                 onChange={(e) => setDifficulty(e.target.value)}
               >
                 {DIFFICULTY_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  <option className="text-zinc-900 bg-white" key={opt.value} value={opt.value}>{opt.label}</option>
                 ))}
               </select>
             </div>
@@ -217,3 +217,4 @@ export function DiaryPage() {
     </div>
   );
 }
+

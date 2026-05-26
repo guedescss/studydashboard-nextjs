@@ -90,7 +90,7 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
               onChange={(e) => setPriority(e.target.value)}
             >
               {Object.entries(PRIORITY_LABELS).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
+                <option className="text-zinc-900 bg-white" key={key} value={key}>{label}</option>
               ))}
             </select>
           </div>
@@ -103,7 +103,7 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
               onChange={(e) => setStatus(e.target.value)}
             >
               {Object.entries(STATUS_LABELS).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
+                <option className="text-zinc-900 bg-white" key={key} value={key}>{label}</option>
               ))}
             </select>
           </div>
@@ -119,9 +119,9 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
               value={subjectId}
               onChange={(e) => setSubjectId(e.target.value)}
             >
-              <option value="">Nenhuma</option>
+              <option className="text-zinc-900 bg-white" value="">Nenhuma</option>
               {subjects.map((s) => (
-                <option key={s.id} value={s.id}>{s.name}</option>
+                <option className="text-zinc-900 bg-white" key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
           </div>
@@ -140,3 +140,4 @@ export function TaskForm({ open, onClose, onSubmit, task, subjects }: TaskFormPr
     </Modal>
   );
 }
+
