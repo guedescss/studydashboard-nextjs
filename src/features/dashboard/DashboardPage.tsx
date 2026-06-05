@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { formatMinutes } from "@/lib/utils";
+import { usePomodoroTimer } from "@/hooks/usePomodoroTimer";
 
 interface DashboardMetrics {
   todayMinutes: number;
@@ -19,6 +20,7 @@ interface DashboardMetrics {
 export function DashboardPage() {
   const [data, setData] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
+  const timer = usePomodoroTimer();
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -43,6 +45,7 @@ export function DashboardPage() {
   const taskRatio = data?.totalTasks
     ? `${data.completedTasks}/${data.totalTasks}`
     : "0/0";
+  const timeDisplay = `${String(timer.minutes).padStart(2, "0")}:${String(timer.seconds).padStart(2, "0")}`;
 
   const stats = [
     {
@@ -93,13 +96,33 @@ export function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
           <h2 className="text-lg font-semibold text-white mb-4">Timer Rápido</h2>
-          <p className="text-3xl font-bold text-violet-400 mb-4 font-mono">25:00</p>
-          <div className="flex gap-2">
-            <Button size="sm">Iniciar</Button>
-            <Button variant="secondary" size="sm">
+          <p className="text-3xl font-bold text-violet-400 mb-4 font-mono">{timeDisplay}</p>
+          <div className="flex flex-wrap gap-2">
+            {timer.status === "running" ? (
+              <Button size="sm" variant="secondary" onClick={timer.pauseTimer}>
+                Pausar
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                onClick={timer.startTimer}
+                disabled={timer.status === "completed"}
+              >
+                {timer.status === "paused" ? "Continuar" : "Iniciar"}
+              </Button>
+            )}
+            <Button variant="ghost" size="sm" onClick={timer.resetTimer}>
+              Resetar
+            </Button>
+            <Button variant="secondary" size="sm" onClick={timer.addDistraction}>
               +1 Distração
             </Button>
           </div>
+          {timer.distractionCount > 0 && (
+            <p className="text-xs text-amber-300 mt-3">
+              Distrações nesta sessão: {timer.distractionCount}
+            </p>
+          )}
           {data && data.todayDistractions > 0 && (
             <p className="text-xs text-zinc-500 mt-3">
               Distrações hoje: {data.todayDistractions}
